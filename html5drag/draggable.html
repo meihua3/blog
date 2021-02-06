@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #dragEle {
+        width: 200px;
+        height: 200px;
+        background-color: antiquewhite;
+      }
+      #target {
+      }
+      .drag {
+        width: 300px;
+        height: 300px;
+        background-color: pink;
+      }
+      .dragover {
+        width: 300px;
+        height: 300px;
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dragEle" draggable="true">
+      我是拖放容器
+      <img src="./ths.jpg" alt="ths" width="20" height="20" />
+    </div>
+    //目标元素
+    <div id="target" class="drag">我是放置容器</div>
+  </body>
+  <script>
+    let dragEle = document.getElementById("dragEle");
+    let target = document.getElementById("target");
+
+    // dragEle.addEventListener("dragstart", function (e) {
+    //   console.log("被拖拽元素开始拖拽 dragstart");
+    //   console.log(e);
+    // });
+    // dragEle.addEventListener("drag", function (e) {
+    //   console.log("被拖拽元素拖拽中 drag");
+    //   console.log(e);
+    // });
+    // target.addEventListener("dragenter", function (e) {
+    //   console.log("进入放置容器 dragenter");
+    //   console.log(e);
+    // });
+    // target.addEventListener("dragover", function (e) {
+    //   console.log("放置容器中移动 dragover");
+    //   console.log(e);
+    // });
+    // target.addEventListener("dragleave", function (e) {
+    //   console.log("离开放置容器 dragleave");
+    //   console.log(e);
+    // });
+    // target.addEventListener("drop", function (e) {
+    //   console.log("放置于放置容器中 drop");
+    //   console.log(e);
+    // });
+    // target.addEventListener("dropend", function (e) {
+    //   console.log("被拖拽元素结束拖拽 dropend");
+    //   console.log(e);
+    // });
+    function DragStart() {
+      dragEle.addEventListener("dragstart", function (e) {
+        e.dataTransfer.setData("text/plain", e.target.innerHTML);
+        console.log(e.target.innerHTML);
+        e.dataTransfer.effectAllowed = "copy";
+      });
+    }
+    window.addEventListener("load", DragStart, false);
+    function DragOver() {
+      // 拖放目标元素
+
+      // 监听dragover事件，作用在目标元素上
+      target.addEventListener(
+        "dragover",
+        function (e) {
+          console.log("DragOver()");
+
+          // 改变样式
+          this.className = "dragover";
+          // 取消浏览器的默认处理
+          e.preventDefault();
+        },
+        false
+      );
+    }
+    // 添加函数DragStart到window.onload监听事件
+    window.addEventListener("load", DragOver, false);
+    function Drop() {
+      // 拖放目标元素
+
+      // 监听drop事件，作用在目标元素上
+      target.addEventListener(
+        "drop",
+        function (e) {
+          console.log(e);
+          var data = e.dataTransfer.getData("text/plain");
+          //取得dataTransfer对象中的数据
+          this.innerHTML += data;
+          e.dataTransfer.dropEffect = "copy";
+          // 还原样式
+          this.className = "drag";
+        },
+        false
+      );
+    }
+    // 添加函数DragStart到window.onload监听事件
+    window.addEventListener("load", Drop, false);
+  </script>
+</html>
